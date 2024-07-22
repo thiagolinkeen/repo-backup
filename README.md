@@ -1,5 +1,7 @@
 # Welcome to your CDK TypeScript project
 
+I'm testing mirror feature
+
 This is a blank project for CDK development with TypeScript.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
