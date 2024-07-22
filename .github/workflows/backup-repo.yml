@@ -1,35 +1,3 @@
-name: sync up to codecommit
-
-on:
-  push:
-    tags-ignore:
-      - '*'
-    branches:
-      - '*'
-
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4.0.2
-        with:
-          role-to-assume: arn:aws:iam::590183809276:role/RepoBackupStack-GitHubActionsRole4F1BBA26-VJ98fpJ4Z0cI
-          role-session-name: GitHub-to-AWS-via-FederatedOIDC
-          aws-region: us-east-1
-
-      - name: Sync up to CodeCommit
-        uses: tsgit18/sync-up-to-codecommit-action@v1
-        with:
-          repository_name: poc-github-backup
-          aws_region: us-east-1
-
 name: Sync Github with CodeCommit
 
 on:
