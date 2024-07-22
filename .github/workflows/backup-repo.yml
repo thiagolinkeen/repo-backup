@@ -16,18 +16,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Mark workspace as safe directory
-        run: |
-          git config --global --add safe.directory /github/workspace
-
-      - name: Show repository details
-        run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Branch: $GITHUB_REF"
-          git remote -v
-          git branch -v
-          git log -1
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
@@ -39,5 +27,5 @@ jobs:
       - name: Sync up to CodeCommit
         uses: tsgit18/sync-up-to-codecommit-action@v1
         with:
-          repository_name: thiagolinkeen/repo-backup
+          repository_name: poc-github-backup
           aws_region: us-east-1
