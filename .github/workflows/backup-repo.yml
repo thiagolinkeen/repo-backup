@@ -37,8 +37,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.CODECOMMIT_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: arn:aws:iam::590183809276:role/RepoBackupStack-GitHubActionsRole4F1BBA26-VJ98fpJ4Z0cI
+          role-session-name: GitHub-to-AWS-via-FederatedOIDC
+          aws-region: us-east-1
       
       - run: git config --global --add safe.directory /github/workspace
 
