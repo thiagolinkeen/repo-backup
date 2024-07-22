@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
-export class RepoBackupStack extends cdk.Stack {
+export class GithubActionsOidcStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -17,7 +17,7 @@ export class RepoBackupStack extends cdk.Stack {
       assumedBy: new iam.WebIdentityPrincipal(oidcProvider.openIdConnectProviderArn, {
         StringEquals: {
           'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
-          'token.actions.githubusercontent.com:sub': 'repo:thiagolinkeen/repo-backup:ref:refs/heads/*',
+          'token.actions.githubusercontent.com:sub': 'repo:thiagolinkeen/repo-backup:ref:refs/heads/main',
         },
       }),
       description: 'Role assumida pelo GitHub Actions via OIDC',
