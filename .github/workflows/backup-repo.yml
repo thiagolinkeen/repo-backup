@@ -16,6 +16,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Mark workspace as safe directory
+        run: |
+          git config --global --add safe.directory /github/workspace
 
       - name: Show repository details
         run: |
