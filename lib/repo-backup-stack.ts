@@ -1,16 +1,29 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 export class RepoBackupStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    // Defina o GitHub OIDC Provider
+    const oidcProvider = new iam.OpenIdConnectProvider(this, 'GitHubOIDCProvider', {
+      url: 'https://token.actions.githubusercontent.com',
+      clientIds: ['sts.amazonaws.com'],
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'RepoBackupQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    // Defina a Role IAM que será assumida pelo GitHub Actions
+    const githubActionsRole = new iam.Role(this, 'GitHubActionsRole', {
+      assumedBy: new iam.WebIdentityPrincipal(oidcProvider.openIdConnectProviderArn, {
+        StringEquals: {
+          'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+          'token.actions.githubusercontent.com:sub': 'repo:thiagolinkeen/repo-backup:ref:refs/heads/*',
+        },
+      }),
+      description: 'Role assumida pelo GitHub Actions via OIDC',
+    });
+
+    // Adicione permissões à role conforme necessário
+    githubActionsRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
   }
 }
